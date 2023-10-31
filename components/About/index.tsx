@@ -64,17 +64,17 @@ const About = () => {
                 <span className="bg-meta text-white text-metatitle inline-flex rounded-full py-1 px-4.5 mr-4 mb-4 uppercase ">
                   New
                 </span>{" "}
-                SaaS Boilerplate for Next.js
+                Elevate Growth with Our Strategy
               </h4>
               <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">
                 A Complete Solution for
                 <span className="inline-block relative before:absolute before:bottom-2.5 before:left-0 before:w-full before:h-3 before:bg-titlebg dark:before:bg-titlebgdark before:-z-1">
-                  SaaS Startup
+                  Your Business
                 </span>
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-                ultricies lacus non fermentum ultrices. Fusce consectetur le.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+                lacus non fermentum ultrices. Fusce consectetur le.
               </p>
 
               <div className="mt-7.5 flex items-center gap-5">
@@ -85,7 +85,7 @@ const About = () => {
                 </div>
                 <div className="w-3/4">
                   <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
-                    React 18, Next.js 13 and TypeScript
+                    Comprehensive Services
                   </h5>
                   <p>Ut ultricies lacus non fermentum ultrices.</p>
                 </div>
@@ -132,7 +132,7 @@ const About = () => {
               className="animate_left md:w-1/2"
             >
               <h4 className="text-black dark:text-white font-medium uppercase">
-                Launch Your SaaS Fast
+                Launch Your Website Fast
               </h4>
               <h2 className="relative font-bold text-black dark:text-white text-3xl xl:text-hero mb-6">
                 Packed with All Essential
@@ -141,8 +141,8 @@ const About = () => {
                 </span>
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-                ultricies lacus non fermentum ultrices. Fusce consectetur le.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+                lacus non fermentum ultrices. Fusce consectetur le.
               </p>
               <div>
                 <a

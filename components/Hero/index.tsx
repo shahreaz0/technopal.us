@@ -18,15 +18,19 @@ const Hero = () => {
           <div className="flex lg:items-center lg:gap-8 xl:gap-32.5">
             <div className=" md:w-1/2">
               <h4 className="text-black dark:text-white text-lg font-medium mb-4.5">
-                🔥 Solid - A Complete SaaS Web Template
+                🔥 Designing Digital Excellence
               </h4>
               <h1 className="text-black dark:text-white text-3xl xl:text-hero font-bold mb-5 pr-16 ">
-              Free Next.js Template for 
-                <span className="inline-block relative before:absolute before:bottom-2.5 before:left-0 before:w-full before:h-3 before:bg-titlebg dark:before:bg-titlebgdark before:-z-1 ml-2.5 ">SaaS
+                Innovation through User-Focused
+                <span className="inline-block relative before:absolute before:bottom-2.5 before:left-0 before:w-full before:h-3 before:bg-titlebg dark:before:bg-titlebgdark before:-z-1 ml-2.5 ">
+                  Website
                 </span>
               </h1>
               <p>
-Solid Pro - Packed with all the key integrations you need for swift SaaS startup launch, including - Auth, Database, Sanity Blog, Essential Components, Pages and More. Built-winth - Next.js 13, React 18 and TypeScript.
+                Technopal.us is your ultimate web design partner, here to ensure your
+                website is a show-stopper for your visitors. With our commitment to
+                innovation and user-centric design, we deliver memorable web experiences
+                that leave a lasting impression.
               </p>
 
               <div className="mt-10">

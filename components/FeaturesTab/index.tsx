@@ -63,7 +63,7 @@ const FeaturesTab = () => {
               </div>
               <div className="lg:w-auto md:w-3/5">
                 <h5 className="text-black dark:text-white text-sm xl:text-regular font-medium">
-                  Clean User Interface
+                  Unparalleled Transparency
                 </h5>
               </div>
             </div>
@@ -82,7 +82,7 @@ const FeaturesTab = () => {
               </div>
               <div className="lg:w-auto md:w-3/5">
                 <h5 className="text-black dark:text-white text-sm xl:text-regular font-medium">
-                  Essential Business Pages
+                  Outcome-Oriented Approach
                 </h5>
               </div>
             </div>
@@ -101,7 +101,7 @@ const FeaturesTab = () => {
               </div>
               <div className="lg:w-auto md:w-3/5">
                 <h5 className="text-black dark:text-white text-sm xl:text-regular font-medium">
-                  Fully Functional Integrations
+                  Highly Competent In-House Staff
                 </h5>
               </div>
             </div>
@@ -128,10 +128,7 @@ const FeaturesTab = () => {
             className="animate_top mx-auto max-w-c-1154"
           >
             {featuresTabData.map((feature, key) => (
-              <div
-                className={feature.id === currentTab ? "block" : "hidden"}
-                key={key}
-              >
+              <div className={feature.id === currentTab ? "block" : "hidden"} key={key}>
                 <FeaturesTabItem featureTab={feature} />
               </div>
             ))}

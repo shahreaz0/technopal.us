@@ -30,15 +30,15 @@ const Header = () => {
   return (
     <header
       className={`fixed left-0 top-0 w-full z-99999 py-7 ${
-        stickyMenu
-          ? "bg-white dark:bg-black shadow !py-4 transition duration-100"
-          : ""
+        stickyMenu ? "bg-white dark:bg-black shadow !py-4 transition duration-100" : ""
       }`}
     >
       <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0 lg:flex items-center justify-between relative">
         <div className="w-full lg:w-1/4 flex items-center justify-between">
           <a href="/">
-            <Image
+            <h4 className="text-2xl text-primary">Technopal.us</h4>
+
+            {/* <Image
               src="/images/logo/logo-dark.svg"
               alt="logo"
               width={119.03}
@@ -51,7 +51,7 @@ const Header = () => {
               width={119.03}
               height={30}
               className="w-full dark:hidden"
-            />
+            /> */}
           </a>
 
           {/* <!-- Hamburger Toggle BTN --> */}
@@ -124,9 +124,7 @@ const Header = () => {
                         </span>
                       </a>
 
-                      <ul
-                        className={`dropdown ${dropdownToggler ? "flex" : ""}`}
-                      >
+                      <ul className={`dropdown ${dropdownToggler ? "flex" : ""}`}>
                         {menuItem.submenu.map((item, key) => (
                           <li key={key} className="hover:text-primary">
                             <Link href={item.path || "#"}>{item.title}</Link>
@@ -155,17 +153,17 @@ const Header = () => {
             <ThemeToggler />
 
             <Link
-              href="https://github.com/NextJSTemplates/solid-nextjs"
+              href="/auth/signup"
               className="text-waterloo text-regular font-medium hover:text-primary"
             >
-            GitHub Repo 🌟
+              Register
             </Link>
 
             <Link
-              href="https://nextjstemplates.com/templates/solid"
+              href="/auth/signin"
               className="flex items-center justify-center bg-primary hover:bg-primaryho ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5"
             >
-              Get Pro 🔥
+              Login
             </Link>
           </div>
         </div>
