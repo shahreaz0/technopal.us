@@ -5,6 +5,7 @@ import Feature from "@/components/Features";
 import About from "@/components/About";
 import FeaturesTab from "@/components/FeaturesTab";
 import FunFact from "@/components/FunFact";
+import MainPrograms from "@/components/MainPrograms";
 import Integration from "@/components/Integration";
 import CTA from "@/components/CTA";
 import FAQ from "@/components/FAQ";
@@ -28,6 +29,7 @@ export default function Home() {
       <About />
       <FeaturesTab />
       <FunFact />
+      <MainPrograms />
       <Integration />
       <CTA />
       <FAQ />

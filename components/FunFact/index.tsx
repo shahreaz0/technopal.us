@@ -59,9 +59,8 @@ const FunFact = () => {
               Trusted by Global Companies.
             </h2>
             <p className="lg:w-11/12 mx-auto">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-              convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam
-              ante in maximus.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor
+              eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.
             </p>
           </motion.div>
 
