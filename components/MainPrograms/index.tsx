@@ -1,36 +1,15 @@
 "use client";
 import React from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { Briefcase, Home, Scale } from "lucide-react";
 
 const FunFact = () => {
   return (
     <>
       {/* <!-- ===== Funfact Start ===== --> */}
       <section className="py-20 lg:py-22.5 px-4 md:px-8 2xl:px-0 rounded-lg">
-        <div className=" bg-[url('/flag.gif')] bg-cover rounded-lg">
-          <div className="backdrop-blur-sm bg-black/50 p-20 rounded-lg">
-            <Image
-              width={132}
-              height={132}
-              src="/images/shape/shape-05.png"
-              alt="Doodle"
-              className="absolute bottom-0 right-0 -z-1"
-            />
-
-            <Image
-              fill
-              src="/images/shape/shape-dotted-light-02.svg"
-              alt="Dotted"
-              className="absolute top-0 left-0 -z-1 dark:hidden"
-            />
-            <Image
-              fill
-              src="/images/shape/shape-dotted-dark-02.svg"
-              alt="Dotted"
-              className="absolute top-0 left-0 -z-1 hidden dark:block"
-            />
-
+        <div className="mx-auto max-w-c-1390  bg-[url('/flag.gif')] bg-cover rounded-lg">
+          <div className="py-22.5 xl:py-27.5 backdrop-blur-sm bg-black/50 rounded-lg h-full">
             <motion.div
               variants={{
                 hidden: {
@@ -58,7 +37,7 @@ const FunFact = () => {
               </p>
             </motion.div>
 
-            <div className="flex flex-wrap justify-center gap-8 lg:gap-42.5">
+            <div className="w-3/4 mx-auto grid grid-cols-1 lg:grid-cols-3 justify-center gap-2 lg:gap-42.5">
               <motion.div
                 variants={{
                   hidden: {
@@ -77,10 +56,17 @@ const FunFact = () => {
                 viewport={{ once: true }}
                 className="animate_top text-center"
               >
-                <h3 className="font-bold text-white text-3xl xl:text-sectiontitle3 mb-2.5">
-                  500K
+                <div className="flex justify-center items-center h-20 w-20 bg-white rounded-full mx-auto my-4">
+                  <Home className="h-10 w-10 text-red-600" strokeWidth={2} />
+                </div>
+
+                <h3 className="font-bold text-white text-xl xl:text-sectiontitle4 mb-2.5">
+                  Lorem, ipsum
                 </h3>
-                <p className="text-lg lg:text-para2 text-white/70">World Wide Clients</p>
+                <p className="mx-auto text-white/70">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex similique
+                  maxime dolorum quibusdam.
+                </p>
               </motion.div>
               <motion.div
                 variants={{
@@ -96,14 +82,21 @@ const FunFact = () => {
                 }}
                 initial="hidden"
                 whileInView="visible"
-                transition={{ duration: 1, delay: 0.7 }}
+                transition={{ duration: 1, delay: 0.5 }}
                 viewport={{ once: true }}
                 className="animate_top text-center"
               >
-                <h3 className="font-bold text-white text-3xl xl:text-sectiontitle3 mb-2.5">
-                  1M+
+                <div className="flex justify-center items-center h-20 w-20 bg-white rounded-full mx-auto my-4">
+                  <Briefcase className="h-10 w-10 text-red-600" strokeWidth={2} />
+                </div>
+
+                <h3 className="font-bold text-white text-xl xl:text-sectiontitle4 mb-2.5">
+                  Lorem, ipsum
                 </h3>
-                <p className="text-lg lg:text-para2 text-white/70">Downloads</p>
+                <p className="mx-auto text-white/70">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex similique
+                  maxime dolorum quibusdam.
+                </p>
               </motion.div>
               <motion.div
                 variants={{
@@ -119,14 +112,21 @@ const FunFact = () => {
                 }}
                 initial="hidden"
                 whileInView="visible"
-                transition={{ duration: 1, delay: 0.8 }}
+                transition={{ duration: 1, delay: 0.5 }}
                 viewport={{ once: true }}
                 className="animate_top text-center"
               >
-                <h3 className="font-bold text-white text-3xl xl:text-sectiontitle3 mb-2.5">
-                  865
+                <div className="flex justify-center items-center h-20 w-20 bg-white rounded-full mx-auto my-4">
+                  <Scale className="h-10 w-10 text-red-600" strokeWidth={2} />
+                </div>
+
+                <h3 className="font-bold text-white text-xl xl:text-sectiontitle4 mb-2.5">
+                  Lorem, ipsum
                 </h3>
-                <p className="text-lg lg:text-para2 text-white/70">Winning Award</p>
+                <p className="mx-auto text-white/70">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex similique
+                  maxime dolorum quibusdam.
+                </p>
               </motion.div>
             </div>
           </div>
