@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Brands from "@/components/Brands";
 import Feature from "@/components/Features";
 import About from "@/components/About";
+import AboutUs from "@/components/AboutUs";
 import FeaturesTab from "@/components/FeaturesTab";
 import FunFact from "@/components/FunFact";
 import MainPrograms from "@/components/MainPrograms";
@@ -26,6 +27,7 @@ export default function Home() {
       <Hero />
       <Brands />
       <Feature />
+      <AboutUs />
       <About />
       <FeaturesTab />
       <FunFact />
