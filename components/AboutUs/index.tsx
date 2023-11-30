@@ -64,7 +64,7 @@ const AboutUs = () => {
                 fill
               />
               <Image
-                src="/images/about/about-dark-01.png"
+                src="/american-flag.jpg"
                 alt="About"
                 className="hidden dark:block"
                 fill
