@@ -55,6 +55,7 @@ const packages = [
 
 import { stripe } from "@/configs/stripe";
 import Stripe from "stripe";
+import GetPlanButton from "./get-plan-button";
 
 export default async function Pricing() {
   const { data: prices } = await stripe.prices.list({
@@ -62,6 +63,11 @@ export default async function Pricing() {
   });
 
   console.log(prices.map((e) => (e.product as Stripe.Product).name).reverse());
+
+  async function hello() {
+    "use server";
+    console.log("====================");
+  }
 
   return (
     <>
@@ -99,7 +105,7 @@ export default async function Pricing() {
               return (
                 <div
                   key={price.id}
-                  className="group hover:scale-110 hover:bg-primary hover:text-white animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-7.5 xl:p-12.5"
+                  className="group hover:scale-110 hover:bg-primary hover:text-white animate_top md:w-[45%] lg:w-1/3 group relative bg-white dark:bg-blacksection rounded-lg shadow-solid-10 dark:shadow-none border border-stroke dark:border-strokedark p-4 xl:p-6"
                 >
                   {/* {pack.popular && (
                       <div className="group-hover:bg-white group-hover:text-primary absolute top-7.5 -right-3.5 -rotate-90 rounded-tl-full rounded-bl-full bg-primary font-medium text-white text-metatitle uppercase py-1.5 px-4.5">
@@ -118,10 +124,10 @@ export default async function Pricing() {
                   </h4>
                   <p>{product.description}</p>
 
-                  <div className=" border-t border-stroke dark:border-strokedark mt-9 pt-9 pb-12.5">
+                  <div className="border-t border-stroke dark:border-strokedark mt-9 pt-9 pb-12.5">
                     <ul className="group-hover:text-white">
                       {product.features.map((feature) => (
-                        <li className=" group-hover:text-white text-black dark:text-manatee mb-4 last:mb-0">
+                        <li className="group-hover:text-white text-black dark:text-manatee mb-3 last:mb-0 text-sm">
                           {feature.name}
                         </li>
                       ))}
@@ -138,23 +144,7 @@ export default async function Pricing() {
                     </ul>
                   </div>
 
-                  <button
-                    aria-label="purchase this plan"
-                    className="inline-flex items-center gap-2.5 text-primary dark:text-white dark:hover:text-primary font-medium transition-all duration-300"
-                  >
-                    <span className="hover:pr-2 duration-500"> Get the Plan</span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M10.4767 6.16701L6.00668 1.69701L7.18501 0.518677L13.6667 7.00034L7.18501 13.482L6.00668 12.3037L10.4767 7.83368H0.333344V6.16701H10.4767Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </button>
+                  <GetPlanButton priceId={price.id} />
                 </div>
               );
             })}
