@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 type Props = {

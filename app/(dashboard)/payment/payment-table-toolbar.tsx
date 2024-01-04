@@ -41,8 +41,10 @@ export function UserTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
       <section
         className="flex gap-2"
         onClick={() => {
-          localStorage.clear();
-          window.location.href = "/";
+          if (typeof window !== "undefined") {
+            localStorage.clear();
+            window.location.href = "/";
+          }
         }}
       >
         <Button size="sm">Logout</Button>
