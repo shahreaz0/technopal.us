@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 type Props = {
@@ -44,6 +44,7 @@ export function PaymentTable(props: Props) {
     const password = formData.get("password");
 
     if (username === "technopal" && password === "admin1122") {
+      localStorage.setItem("state", "false");
       setOpen(false);
     }
   }
