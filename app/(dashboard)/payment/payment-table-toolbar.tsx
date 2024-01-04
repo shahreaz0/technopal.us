@@ -18,10 +18,10 @@ export function UserTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter by name..."
-          value={(table.getColumn("fullName")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter by email..."
+          value={(table.getColumn("receipt_email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("fullName")?.setFilterValue(event.target.value)
+            table.getColumn("receipt_email")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
@@ -37,7 +37,17 @@ export function UserTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+
+      <section
+        className="flex gap-2"
+        onClick={() => {
+          localStorage.clear();
+          window.location.href = "/";
+        }}
+      >
+        <Button size="sm">Logout</Button>
+        <DataTableViewOptions table={table} />
+      </section>
     </div>
   );
 }
