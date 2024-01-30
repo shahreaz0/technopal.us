@@ -13,7 +13,7 @@ const Signin = () => {
   return (
     <>
       {/* <!-- ===== SignIn Form Start ===== --> */}
-      <section className="pt-32.5 lg:pt-45 xl:pt-50 pb-12.5 lg:pb-25 xl:pb-30">
+      <section className="">
         <div className="mx-auto max-w-c-1016 relative z-1 pt-10 lg:pt-15 xl:pt-20 pb-7.5 px-7.5 lg:px-15 xl:px-20">
           <div className="absolute -z-1 rounded-lg left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#dee7ff47] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
           <div className="absolute -z-1 bottom-17.5 left-0 w-full h-1/3">
@@ -52,11 +52,10 @@ const Signin = () => {
             <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle2 font-semibold mb-15 text-center">
               Login to Your Account
             </h2>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <div className="flex items-center gap-8">
                 <button
                   aria-label="sign with google"
-                 
                   className="mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] py-3 px-6 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
                 >
                   <span className="mr-3">
@@ -96,8 +95,7 @@ const Signin = () => {
                 </button>
 
                 <button
-                aria-label="signup with github"
-                 
+                  aria-label="signup with github"
                   className="mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] py-3 px-6 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
                 >
                   <span className="mr-3">
@@ -114,7 +112,7 @@ const Signin = () => {
                   Signup with Github
                 </button>
               </div>
-            </div>
+            </div> */}
             <div className="mb-10 flex items-center justify-center">
               <span className="hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-stroke-dark sm:block"></span>
               <p className="w-full px-5 text-center text-base text-body-color dark:text-body-color-dark">
@@ -124,14 +122,14 @@ const Signin = () => {
             </div>
 
             <form>
-              <div className="flex flex-col lg:flex-row lg:justify-between gap-7.5 lg:gap-14 mb-7.5 lg:mb-12.5">
+              <div className="w-full flex flex-col lg:flex-row lg:justify-center gap-10 mb-7.5 lg:mb-12.5">
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Email"
                   name="email"
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
-                  className="w-full lg:w-1/2 !bg-white dark:!bg-black border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className="!bg-white dark:!bg-black border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
 
                 <input
@@ -139,10 +137,8 @@ const Signin = () => {
                   placeholder="Password"
                   name="password"
                   value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
-                  className="w-full lg:w-1/2 !bg-white dark:!bg-black border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  onChange={(e) => setData({ ...data, password: e.target.value })}
+                  className="!bg-white dark:!bg-black border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
               </div>
 
@@ -168,7 +164,10 @@ const Signin = () => {
                   </a>
                 </div>
 
-                <button aria-label="login with email and password" className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3">
+                <button
+                  aria-label="login with email and password"
+                  className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+                >
                   Log in
                   <svg
                     className="fill-white"

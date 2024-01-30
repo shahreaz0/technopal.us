@@ -7,12 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/core/data-table/data-table-view-options";
 
+import { useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
 export function UserTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  const { signOut } = useClerk();
+
+  const router = useRouter();
 
   return (
     <div className="flex items-center justify-between">
@@ -38,15 +45,7 @@ export function UserTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
         )}
       </div>
 
-      <section
-        className="flex gap-2"
-        onClick={() => {
-          if (typeof window !== "undefined") {
-            localStorage.clear();
-            window.location.href = "/";
-          }
-        }}
-      >
+      <section className="flex gap-2" onClick={() => signOut(() => router.push("/"))}>
         <Button size="sm">Logout</Button>
         <DataTableViewOptions table={table} />
       </section>

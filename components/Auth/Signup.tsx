@@ -1,24 +1,92 @@
 "use client";
-import React, { useState } from "react";
+import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const Signup = () => {
-  const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+import { useSignUp } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
+const Signup = () => {
+  const { isLoaded, signUp, setActive } = useSignUp();
+
+  const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [code, setCode] = useState("");
+
+  const router = useRouter();
+
+  if (!isLoaded) {
+    // handle loading state
+    return null;
+  }
+
+  async function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!isLoaded) return;
+
+    const formData = new FormData(event.currentTarget);
+
+    const payload = {
+      emailAddress: formData.get("emailAddress") as string,
+      password: formData.get("password") as string,
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+    };
+
+    try {
+      setLoading(true);
+
+      await signUp.create(payload);
+
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
+      setLoading(false);
+      setVerifying(true);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  }
+
+  async function handleVerify() {
+    if (!isLoaded) return;
+
+    try {
+      // Submit the code that the user provides to attempt verification
+      const completeSignUp = await signUp.attemptEmailAddressVerification({
+        code,
+      });
+
+      if (completeSignUp.status !== "complete") {
+        // The status can also be `abandoned` or `missing_requirements`
+        // Please see https://clerk.com/docs/references/react/use-sign-up#result-status for  more information
+        console.log(JSON.stringify(completeSignUp, null, 2));
+      }
+
+      // Check the status to see if it is complete
+      // If complete, the user has been created -- set the session active
+      if (completeSignUp.status === "complete") {
+        await setActive({ session: completeSignUp.createdSessionId });
+        // Redirect the user to a post sign-up route
+        router.push("/payment");
+      }
+    } catch (err: any) {
+      // This can return an array of errors.
+      // See https://clerk.com/docs/custom-flows/error-handling to learn about error handling
+      console.error("Error:", JSON.stringify(err, null, 2));
+    }
+  }
 
   return (
     <>
       {/* <!-- ===== SignUp Form Start ===== --> */}
-      <section className="pt-32.5 lg:pt-45 xl:pt-50 pb-12.5 lg:pb-25 xl:pb-30">
+      <section>
         <div className="mx-auto max-w-c-1016 relative z-1 pt-10 lg:pt-15 xl:pt-20 pb-7.5 px-7.5 lg:px-15 xl:px-20">
-          <div className="absolute -z-1 rounded-lg left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#dee7ff47] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
+          <div className="absolute -z-1 left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#dee7ff47] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
           <div className="absolute -z-1 bottom-17.5 left-0 w-full h-1/3">
             <Image
               src="/images/shape/shape-dotted-light.svg"
@@ -56,10 +124,9 @@ const Signup = () => {
               Create an Account
             </h2>
 
-            <div className="flex items-center gap-8">
+            {/* <div className="flex items-center gap-8">
               <button
                 aria-label="signup with google"
-     
                 className="mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] py-3 px-6 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
               >
                 <span className="mr-3">
@@ -100,7 +167,6 @@ const Signup = () => {
 
               <button
                 aria-label="signup with github"
-
                 className="mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] py-3 px-6 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
               >
                 <span className="mr-3">
@@ -124,55 +190,53 @@ const Signup = () => {
                 Or, register with your email
               </p>
               <span className="hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-stroke-dark sm:block"></span>
-            </div>
+            </div> */}
 
-            <form>
-              <div className="flex flex-col lg:flex-row lg:justify-between gap-7.5 lg:gap-14 mb-7.5 lg:mb-12.5">
+            <form onSubmit={onSubmitHandler}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <input
+                  required
                   name="firstName"
                   type="text"
                   placeholder="First name"
-                  value={data.firstName}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
 
                 <input
+                  required
                   name="lastName"
                   type="text"
                   placeholder="Last name"
-                  value={data.lastName}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
-              </div>
 
-              <div className="flex flex-col lg:flex-row lg:justify-between gap-7.5 lg:gap-14 mb-7.5 lg:mb-12.5">
                 <input
-                  name="email"
+                  required
+                  name="emailAddress"
                   type="email"
                   placeholder="Email address"
-                  value={data.email}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
 
                 <input
+                  required
                   name="password"
                   type="password"
                   placeholder="Password"
-                  value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full lg:w-1/2 bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
+
+                {verifying && (
+                  <input
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    required
+                    name="code"
+                    type="code"
+                    placeholder="code"
+                    className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  />
+                )}
               </div>
 
               <div className="flex flex-wrap md:justify-between gap-10 xl:gap-15">
@@ -191,22 +255,55 @@ const Signup = () => {
                   </label>
                 </div>
 
-                <button aria-label="signup with email and password" className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3">
-                  Create Account
-                  <svg
-                    className="fill-white"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                      fill=""
-                    />
-                  </svg>
-                </button>
+                {verifying ? (
+                  <>
+                    <button
+                      onClick={handleVerify}
+                      type="button"
+                      aria-label="signup with email and password"
+                      className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+                    >
+                      Verify Account
+                      <svg
+                        className="fill-white"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
+                          fill=""
+                        />
+                      </svg>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      aria-label="signup with email and password"
+                      className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+                    >
+                      Create Account
+                      <svg
+                        className="fill-white"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
+                          fill=""
+                        />
+                      </svg>
+                    </button>
+                  </>
+                )}
               </div>
 
               <div className="text-center border-t border-stroke dark:border-strokedark mt-12.5 py-5">
