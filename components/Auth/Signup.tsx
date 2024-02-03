@@ -4,13 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import { useSignUp } from "@clerk/nextjs";
+import { useSignUp, clerkClient } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+
+import { Loader2, ArrowRight } from "lucide-react";
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [code, setCode] = useState("");
 
@@ -36,18 +38,22 @@ const Signup = () => {
     };
 
     try {
-      setLoading(true);
+      setIsLoading(true);
 
-      await signUp.create(payload);
+      const a = await signUp.create(payload);
 
-      await signUp.prepareEmailAddressVerification({
+      console.log(a);
+
+      const res = await signUp.prepareEmailAddressVerification({
         strategy: "email_code",
       });
 
-      setLoading(false);
+      console.log(res);
+
+      setIsLoading(false);
       setVerifying(true);
     } catch (error) {
-      setLoading(false);
+      setIsLoading(false);
       console.log(error);
     }
   }
@@ -71,60 +77,65 @@ const Signup = () => {
       // If complete, the user has been created -- set the session active
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        // Redirect the user to a post sign-up route
-        router.push("/payment");
+
+        await clerkClient.users.updateUserMetadata(
+          completeSignUp.createdUserId as string,
+          {
+            publicMetadata: {
+              role: "user",
+            },
+          }
+        );
+
+        router.push("/dashboard");
       }
     } catch (err: any) {
-      // This can return an array of errors.
-      // See https://clerk.com/docs/custom-flows/error-handling to learn about error handling
       console.error("Error:", JSON.stringify(err, null, 2));
     }
   }
 
   return (
-    <>
-      {/* <!-- ===== SignUp Form Start ===== --> */}
-      <section>
-        <div className="mx-auto max-w-c-1016 relative z-1 pt-10 lg:pt-15 xl:pt-20 pb-7.5 px-7.5 lg:px-15 xl:px-20">
-          <div className="absolute -z-1 left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#dee7ff47] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
-          <div className="absolute -z-1 bottom-17.5 left-0 w-full h-1/3">
-            <Image
-              src="/images/shape/shape-dotted-light.svg"
-              alt="Dotted"
-              className="dark:hidden"
-              fill
-            />
-            <Image
-              src="/images/shape/shape-dotted-dark.svg"
-              alt="Dotted"
-              className="hidden dark:block"
-              fill
-            />
-          </div>
+    <section>
+      <div className="mx-auto max-w-c-1016 relative z-1 pt-10 lg:pt-15 xl:pt-20 pb-7.5 px-7.5 lg:px-15 xl:px-20">
+        <div className="absolute -z-1 left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#dee7ff47] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
+        <div className="absolute -z-1 bottom-17.5 left-0 w-full h-1/3">
+          <Image
+            src="/images/shape/shape-dotted-light.svg"
+            alt="Dotted"
+            className="dark:hidden"
+            fill
+          />
+          <Image
+            src="/images/shape/shape-dotted-dark.svg"
+            alt="Dotted"
+            className="hidden dark:block"
+            fill
+          />
+        </div>
 
-          <motion.div
-            variants={{
-              hidden: {
-                opacity: 0,
-                y: -20,
-              },
+        <motion.div
+          variants={{
+            hidden: {
+              opacity: 0,
+              y: -20,
+            },
 
-              visible: {
-                opacity: 1,
-                y: 0,
-              },
-            }}
-            initial="hidden"
-            whileInView="visible"
-            transition={{ duration: 1, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="animate_top shadow-solid-8 rounded-lg bg-white dark:bg-black dark:border dark:border-strokedark pt-7.5 xl:pt-15 px-7.5 xl:px-15"
-          >
-            <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle2 font-semibold mb-15 text-center">
-              Create an Account
-            </h2>
+            visible: {
+              opacity: 1,
+              y: 0,
+            },
+          }}
+          initial="hidden"
+          whileInView="visible"
+          transition={{ duration: 1, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="animate_top shadow-solid-8 rounded-lg bg-white dark:bg-black dark:border dark:border-strokedark pt-7.5 xl:pt-15 px-7.5 xl:px-15"
+        >
+          <h2 className="text-black dark:text-white text-3xl xl:text-sectiontitle2 font-semibold mb-15 text-center">
+            Create an Account
+          </h2>
 
-            {/* <div className="flex items-center gap-8">
+          {/* <div className="flex items-center gap-8">
               <button
                 aria-label="signup with google"
                 className="mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] py-3 px-6 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
@@ -192,137 +203,123 @@ const Signup = () => {
               <span className="hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-stroke-dark sm:block"></span>
             </div> */}
 
-            <form onSubmit={onSubmitHandler}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <form onSubmit={onSubmitHandler}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <input
+                required
+                name="firstName"
+                type="text"
+                placeholder="First name"
+                className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+              />
+
+              <input
+                required
+                name="lastName"
+                type="text"
+                placeholder="Last name"
+                className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+              />
+
+              <input
+                required
+                name="emailAddress"
+                type="email"
+                placeholder="Email address"
+                className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+              />
+
+              <input
+                required
+                name="password"
+                type="password"
+                placeholder="Password"
+                className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+              />
+
+              {verifying && (
                 <input
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
                   required
-                  name="firstName"
-                  type="text"
-                  placeholder="First name"
+                  name="code"
+                  type="code"
+                  placeholder="code"
                   className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
+              )}
+            </div>
 
+            <div className="flex flex-wrap md:justify-between gap-10 xl:gap-15">
+              <div className="flex items-center mb-4">
                 <input
-                  required
-                  name="lastName"
-                  type="text"
-                  placeholder="Last name"
-                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
+                  id="default-checkbox"
+                  type="checkbox"
+                  value=""
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
-
-                <input
-                  required
-                  name="emailAddress"
-                  type="email"
-                  placeholder="Email address"
-                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
-                />
-
-                <input
-                  required
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
-                />
-
-                {verifying && (
-                  <input
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    required
-                    name="code"
-                    type="code"
-                    placeholder="code"
-                    className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
-                  />
-                )}
+                <label
+                  htmlFor="default-checkbox"
+                  className="max-w-[425px] flex cursor-pointer select-none  pl-3"
+                >
+                  Keep me signed in
+                </label>
               </div>
 
-              <div className="flex flex-wrap md:justify-between gap-10 xl:gap-15">
-                <div className="flex items-center mb-4">
-                  <input
-                    id="default-checkbox"
-                    type="checkbox"
-                    value=""
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    htmlFor="default-checkbox"
-                    className="max-w-[425px] flex cursor-pointer select-none  pl-3"
+              {verifying ? (
+                <button
+                  onClick={handleVerify}
+                  type="button"
+                  aria-label="signup with email and password"
+                  className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+                >
+                  Verify Account
+                  <svg
+                    className="fill-white"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Keep me signed in
-                  </label>
-                </div>
+                    <path
+                      d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
+                      fill=""
+                    />
+                  </svg>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  aria-label="signup with email and password"
+                  className="disabled:bg-black/70 inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+                >
+                  Create Account
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <ArrowRight className="h-5 w-5" />
+                  )}
+                </button>
+              )}
+            </div>
 
-                {verifying ? (
-                  <>
-                    <button
-                      onClick={handleVerify}
-                      type="button"
-                      aria-label="signup with email and password"
-                      className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
-                    >
-                      Verify Account
-                      <svg
-                        className="fill-white"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                          fill=""
-                        />
-                      </svg>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      aria-label="signup with email and password"
-                      className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
-                    >
-                      Create Account
-                      <svg
-                        className="fill-white"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                          fill=""
-                        />
-                      </svg>
-                    </button>
-                  </>
-                )}
-              </div>
-
-              <div className="text-center border-t border-stroke dark:border-strokedark mt-12.5 py-5">
-                <p>
-                  Already have an account?{" "}
-                  <Link
-                    className="text-black dark:text-white hover:text-primary dark:hover:text-primary"
-                    href="/auth/signin"
-                  >
-                    Sign In
-                  </Link>
-                </p>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-      </section>
-      {/* <!-- ===== SignUp Form End ===== --> */}
-    </>
+            <div className="text-center border-t border-stroke dark:border-strokedark mt-12.5 py-5">
+              <p>
+                Already have an account?{" "}
+                <Link
+                  className="text-black dark:text-white hover:text-primary dark:hover:text-primary"
+                  href="/auth/signin"
+                >
+                  Sign In
+                </Link>
+              </p>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 

@@ -4,16 +4,70 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import { useSignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+
+import { toast } from "sonner";
+
+import { Loader2, ArrowRight } from "lucide-react";
+
 const Signin = () => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  const { signIn, setActive } = useSignIn();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  async function onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    console.log(formData.get("email"), formData.get("password"));
+
+    setIsLoading(true);
+
+    await signIn
+      ?.create({
+        identifier: formData.get("email") as string,
+        password: formData.get("password") as string,
+      })
+      .then((result) => {
+        if (result.status === "complete") {
+          setActive({ session: result.createdSessionId });
+
+          setIsLoading(false);
+
+          toast.success("Welcome Back!", {
+            description: "You have successfully logged in.",
+          });
+
+          router.push("/dashboard");
+        } else {
+          console.log(result);
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        const errors = ["form_identifier_not_found", "form_password_incorrect"];
+
+        if (err.errors[0].code === "session_exists") {
+          toast.error("Someone already logged in", {
+            description: "You can only be signed into one account at a time.",
+          });
+        }
+
+        if (errors.includes(err.errors[0].code)) {
+          toast.error("Try Again", {
+            description: "Username or password is incorrect.",
+          });
+        }
+      });
+  }
 
   return (
     <>
       {/* <!-- ===== SignIn Form Start ===== --> */}
-      <section className="">
+      <section>
         <div className="mx-auto max-w-c-1016 relative z-1 pt-10 lg:pt-15 xl:pt-20 pb-7.5 px-7.5 lg:px-15 xl:px-20">
           <div className="absolute -z-1 rounded-lg left-0 top-0 w-full h-2/3 bg-gradient-to-t from-[#F8F9FF] to-[#dee7ff47] dark:bg-gradient-to-t dark:from-[#24283E] dark:to-[#252A42]"></div>
           <div className="absolute -z-1 bottom-17.5 left-0 w-full h-1/3">
@@ -113,31 +167,22 @@ const Signin = () => {
                 </button>
               </div>
             </div> */}
-            <div className="mb-10 flex items-center justify-center">
-              <span className="hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-stroke-dark sm:block"></span>
-              <p className="w-full px-5 text-center text-base text-body-color dark:text-body-color-dark">
-                Or, login with your email
-              </p>
-              <span className="hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-stroke-dark sm:block"></span>
-            </div>
 
-            <form>
-              <div className="w-full flex flex-col lg:flex-row lg:justify-center gap-10 mb-7.5 lg:mb-12.5">
+            <form onSubmit={onSubmitHandler}>
+              <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4 mb-7.5 lg:mb-12.5">
                 <input
+                  required
                   type="email"
                   placeholder="Email"
                   name="email"
-                  value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
                   className="!bg-white dark:!bg-black border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
 
                 <input
+                  required
                   type="password"
                   placeholder="Password"
                   name="password"
-                  value={data.password}
-                  onChange={(e) => setData({ ...data, password: e.target.value })}
                   className="!bg-white dark:!bg-black border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
                 />
               </div>
@@ -165,23 +210,16 @@ const Signin = () => {
                 </div>
 
                 <button
+                  disabled={isLoading}
                   aria-label="login with email and password"
-                  className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+                  className="disabled:bg-black/70 inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
                 >
-                  Log in
-                  <svg
-                    className="fill-white"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                      fill=""
-                    />
-                  </svg>
+                  Log in{" "}
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <ArrowRight className="h-5 w-5" />
+                  )}
                 </button>
               </div>
 
@@ -200,7 +238,6 @@ const Signin = () => {
           </motion.div>
         </div>
       </section>
-      {/* <!-- ===== SignIn Form End ===== --> */}
     </>
   );
 };

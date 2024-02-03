@@ -5,6 +5,8 @@ import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
+import { Toaster } from "sonner";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
@@ -12,6 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <body className={`dark:bg-black`}>
           <ThemeProvider enableSystem={false} attribute="class" defaultTheme="light">
             {children}
+            <Toaster richColors />
           </ThemeProvider>
         </body>
       </html>
