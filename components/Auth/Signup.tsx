@@ -4,24 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import { useSignUp, clerkClient } from "@clerk/nextjs";
+import { useSignUp, isClerkAPIResponseError } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import { Loader2, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 const Signup = () => {
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded, signUp } = useSignUp();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
-  const [code, setCode] = useState("");
 
   const router = useRouter();
-
-  if (!isLoaded) {
-    // handle loading state
-    return null;
-  }
 
   async function onSubmitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -40,57 +34,32 @@ const Signup = () => {
     try {
       setIsLoading(true);
 
-      const a = await signUp.create(payload);
+      await signUp.create(payload);
 
-      console.log(a);
-
-      const res = await signUp.prepareEmailAddressVerification({
+      await signUp.prepareEmailAddressVerification({
         strategy: "email_code",
       });
 
-      console.log(res);
-
-      setIsLoading(false);
-      setVerifying(true);
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-    }
-  }
-
-  async function handleVerify() {
-    if (!isLoaded) return;
-
-    try {
-      // Submit the code that the user provides to attempt verification
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
+      toast.success("Please check your email", {
+        description:
+          "An email has been send to your email. Enter the code to verify the email",
       });
 
-      if (completeSignUp.status !== "complete") {
-        // The status can also be `abandoned` or `missing_requirements`
-        // Please see https://clerk.com/docs/references/react/use-sign-up#result-status for  more information
-        console.log(JSON.stringify(completeSignUp, null, 2));
+      setTimeout(() => {
+        router.push("/otp-verfication");
+      }, 1000);
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+
+      if (isClerkAPIResponseError(error)) {
+        error.errors.map((e) => {
+          toast.error("Failed", {
+            description: e.longMessage,
+          });
+        });
       }
-
-      // Check the status to see if it is complete
-      // If complete, the user has been created -- set the session active
-      if (completeSignUp.status === "complete") {
-        await setActive({ session: completeSignUp.createdSessionId });
-
-        await clerkClient.users.updateUserMetadata(
-          completeSignUp.createdUserId as string,
-          {
-            publicMetadata: {
-              role: "user",
-            },
-          }
-        );
-
-        router.push("/dashboard");
-      }
-    } catch (err: any) {
-      console.error("Error:", JSON.stringify(err, null, 2));
     }
   }
 
@@ -236,18 +205,6 @@ const Signup = () => {
                 placeholder="Password"
                 className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
               />
-
-              {verifying && (
-                <input
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  required
-                  name="code"
-                  type="code"
-                  placeholder="code"
-                  className=" bg-transparent border-b border-stroke dark:border-strokedark focus-visible:outline-none focus:border-waterloo dark:focus:border-manatee focus:placeholder:text-black dark:focus:placeholder:text-white pb-3.5"
-                />
-              )}
             </div>
 
             <div className="flex flex-wrap md:justify-between gap-10 xl:gap-15">
@@ -266,43 +223,19 @@ const Signup = () => {
                 </label>
               </div>
 
-              {verifying ? (
-                <button
-                  onClick={handleVerify}
-                  type="button"
-                  aria-label="signup with email and password"
-                  className="inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
-                >
-                  Verify Account
-                  <svg
-                    className="fill-white"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                      fill=""
-                    />
-                  </svg>
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  aria-label="signup with email and password"
-                  className="disabled:bg-black/70 inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
-                >
-                  Create Account
-                  {isLoading ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    <ArrowRight className="h-5 w-5" />
-                  )}
-                </button>
-              )}
+              <button
+                type="submit"
+                disabled={isLoading}
+                aria-label="signup with email and password"
+                className="disabled:bg-black/70 inline-flex items-center gap-2.5 bg-black dark:bg-btndark hover:bg-blackho ease-in-out duration-300 font-medium text-white rounded-full px-6 py-3"
+              >
+                Create Account
+                {isLoading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <ArrowRight className="h-5 w-5" />
+                )}
+              </button>
             </div>
 
             <div className="text-center border-t border-stroke dark:border-strokedark mt-12.5 py-5">
@@ -310,7 +243,7 @@ const Signup = () => {
                 Already have an account?{" "}
                 <Link
                   className="text-black dark:text-white hover:text-primary dark:hover:text-primary"
-                  href="/auth/signin"
+                  href="/signin"
                 >
                   Sign In
                 </Link>

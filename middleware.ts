@@ -2,7 +2,7 @@ import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/signin", "/signup", "blog"],
+  publicRoutes: ["/", "/signin", "/signup", "/blog", "/otp-verfication"],
   afterAuth(auth, req, evt) {
     if (!auth.userId && !auth.isPublicRoute) {
       return NextResponse.redirect(new URL("/signin", req.url));

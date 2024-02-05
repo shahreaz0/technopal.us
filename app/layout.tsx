@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <body className={`dark:bg-black`}>
           <ThemeProvider enableSystem={false} attribute="class" defaultTheme="light">
             {children}
-            <Toaster richColors />
+            <Toaster richColors expand />
           </ThemeProvider>
         </body>
       </html>
