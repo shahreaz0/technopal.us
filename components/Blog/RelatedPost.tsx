@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BlogData from "./blogData";
 
-const RelatedPost = async () => {
+const RelatedPost = () => {
   return (
     <>
       <div className="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-9">
@@ -25,10 +25,7 @@ const RelatedPost = async () => {
                 )}
               </div>
               <h5 className="font-medium text-md text-black dark:text-white hover:text-primary dark:hover:text-primary transition-all duration-300">
-                <Link href={`/blog/blog-details`}>
-                  {" "}
-                  {post.title.slice(0, 40)}...
-                </Link>
+                <Link href={`/blog/blog-details`}> {post.title.slice(0, 40)}...</Link>
               </h5>
             </div>
           ))}

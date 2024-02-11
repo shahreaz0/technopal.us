@@ -18,7 +18,6 @@ import Testimonial from "@/components/Testimonial";
 export const metadata: Metadata = {
   title: "Technopal.us",
   description: "Technopal.us",
-  // other metadata
 };
 
 export default function Home() {
