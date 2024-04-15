@@ -7,7 +7,7 @@ console.log(process.env.NODE_ENV);
 const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://ctrd-admin.vercel.app";
+    : "https://technopal-us.vercel.app";
 
 export async function getPrice(priceId: string) {
   const session = await stripe.checkout.sessions.create({
