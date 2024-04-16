@@ -2,8 +2,6 @@
 
 import { stripe } from "@/configs/stripe";
 
-console.log(process.env.NODE_ENV);
-
 const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"

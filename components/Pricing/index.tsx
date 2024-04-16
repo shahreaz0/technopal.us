@@ -62,13 +62,6 @@ export default async function Pricing() {
     expand: ["data.product"],
   });
 
-  console.log(prices.map((e) => (e.product as Stripe.Product).name).reverse());
-
-  async function hello() {
-    "use server";
-    console.log("====================");
-  }
-
   return (
     <>
       {/* <!-- ===== Pricing Table Start ===== --> */}

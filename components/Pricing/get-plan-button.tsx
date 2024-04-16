@@ -1,15 +1,30 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
 import { getPrice } from "./actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type Props = {
   priceId: string;
 };
 
 export default function GetPlanButton(props: Props) {
+  const { userId } = useAuth();
+
+  const router = useRouter();
+
   async function buttonHandler() {
-    const url = await getPrice(props.priceId);
-    window.location.href = url as string;
+    if (userId) {
+      const url = await getPrice(props.priceId);
+      window.location.href = url as string;
+    } else {
+      router.push("/login");
+
+      toast.success("Please Login", {
+        description: "For payment you have to login first",
+      });
+    }
   }
 
   return (
