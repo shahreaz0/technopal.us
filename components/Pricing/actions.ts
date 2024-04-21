@@ -3,6 +3,7 @@
 import { stripe } from "@/configs/stripe";
 import { clerkClient } from "@clerk/nextjs/server";
 import { auth } from "@clerk/nextjs";
+import Stripe from "stripe";
 
 const BASE_URL =
   process.env.NODE_ENV === "development"
@@ -12,14 +13,22 @@ const BASE_URL =
 export async function getPrice(priceId: string) {
   const { userId } = await auth();
 
-  let email = "";
-  if (userId) {
-    const { emailAddresses } = await clerkClient.users.getUser(userId);
+  if (!userId) return new Error("");
 
-    email = emailAddresses[0].emailAddress;
+  const { emailAddresses, publicMetadata, firstName, lastName } =
+    await clerkClient.users.getUser(userId);
+
+  let customer: Stripe.Response<Stripe.Customer> | null = null;
+
+  if (!publicMetadata.stripeCustomerId) {
+    customer = await stripe.customers.create({
+      email: emailAddresses[0].emailAddress,
+      metadata: {
+        userId: userId,
+      },
+      name: `${firstName} ${lastName}`,
+    });
   }
-
-  console.log({ userId });
 
   const session = await stripe.checkout.sessions.create({
     line_items: [
@@ -31,15 +40,18 @@ export async function getPrice(priceId: string) {
     mode: "payment",
     success_url: `${BASE_URL}/payment/success`,
     cancel_url: `${BASE_URL}`,
-    invoice_creation: {
-      enabled: true,
-    },
-    customer_creation: "always",
-    customer_email: email,
+    customer: customer?.id || (publicMetadata.stripeCustomerId as string),
+    // invoice_creation: {
+    //   enabled: true,
+    // },
+    // customer_email: email,
     phone_number_collection: {
       enabled: true,
     },
-    billing_address_collection: "required",
+    // billing_address_collection: "required",
+    metadata: {
+      userId,
+    },
   });
 
   return session.url;

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import { useAuth } from "@clerk/nextjs";
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
@@ -12,6 +13,8 @@ const Header = () => {
   const [stickyMenu, setStickyMenu] = useState(false);
 
   const pathUrl = usePathname();
+
+  const { isSignedIn } = useAuth();
 
   // Sticky menu
   const handleStickyMenu = () => {
@@ -34,7 +37,7 @@ const Header = () => {
     >
       <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0 lg:flex items-center justify-between relative">
         <div className="w-full lg:w-1/4 flex items-center justify-between">
-          <a href="/">
+          <Link href="/">
             <h4 className="text-2xl text-primary">Technopal.us</h4>
 
             {/* <Image
@@ -51,7 +54,7 @@ const Header = () => {
               height={30}
               className="w-full dark:hidden"
             /> */}
-          </a>
+          </Link>
 
           {/* <!-- Hamburger Toggle BTN --> */}
           <button
@@ -151,19 +154,30 @@ const Header = () => {
           <div className="flex items-center gap-6 mt-7 lg:mt-0">
             <ThemeToggler />
 
-            <Link
-              href="/signup"
-              className="text-waterloo text-regular font-medium hover:text-primary"
-            >
-              Register
-            </Link>
+            {isSignedIn ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center justify-center bg-primary hover:bg-primaryho ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/signup"
+                  className="text-waterloo text-regular font-medium hover:text-primary"
+                >
+                  Register
+                </Link>
 
-            <Link
-              href="/signin"
-              className="flex items-center justify-center bg-primary hover:bg-primaryho ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5"
-            >
-              Login
-            </Link>
+                <Link
+                  href="/signin"
+                  className="flex items-center justify-center bg-primary hover:bg-primaryho ease-in-out duration-300 text-white text-regular rounded-full py-2.5 px-7.5"
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
