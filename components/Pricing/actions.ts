@@ -41,10 +41,9 @@ export async function getPrice(priceId: string) {
     success_url: `${BASE_URL}/payment/success`,
     cancel_url: `${BASE_URL}`,
     customer: customer?.id || (publicMetadata.stripeCustomerId as string),
-    // invoice_creation: {
-    //   enabled: true,
-    // },
-    // customer_email: email,
+    invoice_creation: {
+      enabled: true,
+    },
     phone_number_collection: {
       enabled: true,
     },
