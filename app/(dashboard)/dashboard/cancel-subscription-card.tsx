@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
@@ -17,8 +17,12 @@ import { toast } from "sonner";
 function SendRequestButton() {
   const { pending } = useFormStatus();
 
+  const { user } = useUser();
+
+  const isDisabled = !user?.publicMetadata?.stripeCustomerId;
+
   return (
-    <Button disabled={pending} type="submit">
+    <Button disabled={pending || isDisabled} type="submit">
       Send Request
     </Button>
   );
@@ -31,8 +35,6 @@ export function CancelSubscriptionCard() {
   });
 
   const { userId } = useAuth();
-
-  console.log(state);
 
   useEffect(() => {
     if (state.data) {

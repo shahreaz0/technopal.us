@@ -20,16 +20,23 @@ import { stripe } from "@/configs/stripe";
 import { auth, clerkClient } from "@clerk/nextjs";
 import { format } from "date-fns";
 import { Download } from "lucide-react";
+import Stripe from "stripe";
 
 export async function InvoiceHistoryCard() {
   const { userId } = await auth();
 
   const { publicMetadata } = await clerkClient.users.getUser(userId!);
 
-  const { data } = await stripe.paymentIntents.list({
-    customer: publicMetadata.stripeCustomerId as string,
-    expand: ["data.invoice.subscription"],
-  });
+  let paymentIntents: [] | Stripe.PaymentIntent[] = [];
+
+  if (publicMetadata?.stripeCustomerId) {
+    const { data } = await stripe.paymentIntents.list({
+      customer: publicMetadata.stripeCustomerId as string,
+      expand: ["data.invoice.subscription"],
+    });
+
+    paymentIntents = data;
+  }
 
   return (
     <Card x-chunk="dashboard-05-chunk-3">
@@ -38,43 +45,49 @@ export async function InvoiceHistoryCard() {
         <CardDescription>Recent invoice history.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Invoice</TableHead>
-              <TableHead className="hidden sm:table-cell">Currency</TableHead>
-              <TableHead className="hidden sm:table-cell">Status</TableHead>
-              <TableHead className="hidden md:table-cell">Date</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((pi) => (
-              <TableRow className="odd:bg-accent" key={pi.id}>
-                <TableCell>
-                  <Download
-                    className="h-4 w-4 cursor-pointer"
-                    // onClick={() => {
-                    //   //   window.location.href = pi.invoice?.invoice_pdf || "";
-                    // }}
-                  />
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">{pi.currency}</TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <Badge className="text-xs capitalize" variant="secondary">
-                    {pi.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {format(pi?.created * 1000, "MMM dd, h:mm a")}
-                </TableCell>
-                <TableCell className="text-right">
-                  ${new Number(pi.amount / 100).toFixed(2)}
-                </TableCell>
+        {paymentIntents.length !== 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Invoice</TableHead>
+                <TableHead className="hidden sm:table-cell">Currency</TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead className="hidden md:table-cell">Date</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {paymentIntents.map((pi) => (
+                <TableRow className="odd:bg-accent" key={pi.id}>
+                  <TableCell>
+                    <Download
+                      className="h-4 w-4 cursor-pointer"
+                      // onClick={() => {
+                      //   //   window.location.href = pi.invoice?.invoice_pdf || "";
+                      // }}
+                    />
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">{pi.currency}</TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs capitalize" variant="secondary">
+                      {pi.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {format(pi?.created * 1000, "MMM dd, h:mm a")}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    ${new Number(pi.amount / 100).toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <CardDescription className="text-center mt-8 h-[100px]">
+            No results
+          </CardDescription>
+        )}
       </CardContent>
     </Card>
   );

@@ -2,7 +2,7 @@ import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/signin", "/signup", "/blog", "/otp-verfication", "/api/webhook"],
+  publicRoutes: ["/", "/signup", "/blog", "/otp-verfication", "/api/webhook", "/signin"],
 
   afterAuth(auth, req, evt) {
     if (!auth.userId && !auth.isPublicRoute) {
@@ -24,7 +24,7 @@ export default authMiddleware({
 });
 
 export const config = {
-  matcher: ["/dashboard", "/payment", "/payment/success", "/signup", "/"],
+  matcher: ["/dashboard", "/payment", "/payment/success", "/signup", "/", "/signin"],
 };
 
 // export const config = {

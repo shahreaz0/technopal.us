@@ -167,7 +167,7 @@ const DashboardHeader = () => {
                   setIsLoading(true);
                   await signOut();
                   setIsLoading(false);
-                  router.push("/login");
+                  router.push("/signin");
                 }}
                 className="disabled:bg-primary/70 flex items-center justify-center bg-primary hover:bg-primaryho ease-in-out duration-300 text-white text-regular rounded-full py-1.5 px-7"
               >
