@@ -80,7 +80,7 @@ export const columns: ColumnDef<Stripe.PaymentIntent>[] = [
   {
     accessorKey: "created",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
-    cell: (info) => <>{format(new Date(info.getValue() as string), "PPP")}</>,
+    cell: (info) => <>{format(info.row.original.created * 1000, "PPP")}</>,
     enableSorting: false,
   },
 
