@@ -14,7 +14,7 @@ const Integration = () => {
             headerInfo={{
               title: `INTEGRATIONS`,
               subtitle: `Remotely Maintain Your Data, From Anywhere, Anytime.`,
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.`,
+              description: `Cloud services have become an increasingly popular method for remotely managing your system. Many businesses are now opting to migrate their systems and data to the cloud, as it offers convenient accessibility from any location. With cloud services, you can effortlessly store files, operate applications, and even oversee entire networks from a remote location.`,
             }}
           />
 

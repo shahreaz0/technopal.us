@@ -32,9 +32,7 @@ const CTA = () => {
                 Join With Us Today & Increase Your Productivity
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-                convallis tortor eros. Donec vitae tortor lacus. Phasellus
-                aliquam ante in maximus.
+              Unlock new levels of efficiency, empowering your journey towards success.
               </p>
             </motion.div>
             <motion.div

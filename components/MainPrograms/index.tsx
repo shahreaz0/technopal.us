@@ -32,8 +32,7 @@ const FunFact = () => {
                 Our Main Program
               </h2>
               <p className="lg:w-11/12 mx-auto text-white/70">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis
-                tortor eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.
+              Join our flagship program, where ingenuity combines with top-notch expertise, propelling you towards prosperity with tailor-made solutions and unparalleled assistance.
               </p>
             </motion.div>
 
@@ -61,11 +60,10 @@ const FunFact = () => {
                 </div>
 
                 <h3 className="font-bold text-white text-xl xl:text-sectiontitle4 mb-2.5">
-                  Lorem, ipsum
+                Web Design & Development
                 </h3>
                 <p className="mx-auto text-white/70">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex similique
-                  maxime dolorum quibusdam.
+                Welcome to our world of web design and development, where creativity meets functionality to craft immersive digital experiences for your brand.
                 </p>
               </motion.div>
               <motion.div
@@ -91,11 +89,10 @@ const FunFact = () => {
                 </div>
 
                 <h3 className="font-bold text-white text-xl xl:text-sectiontitle4 mb-2.5">
-                  Lorem, ipsum
+                Digital Marketing
                 </h3>
                 <p className="mx-auto text-white/70">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex similique
-                  maxime dolorum quibusdam.
+                Welcome to our digital marketing hub! Here, we bring together the power of SEO and social media strategies to enhance your audience reach and engagement.
                 </p>
               </motion.div>
               <motion.div
@@ -121,11 +118,10 @@ const FunFact = () => {
                 </div>
 
                 <h3 className="font-bold text-white text-xl xl:text-sectiontitle4 mb-2.5">
-                  Lorem, ipsum
+                Apps Development
                 </h3>
                 <p className="mx-auto text-white/70">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex similique
-                  maxime dolorum quibusdam.
+                Discover a world of opportunities with our custom app development service, designed to transform your ideas into user-friendly and captivating mobile applications.
                 </p>
               </motion.div>
             </div>

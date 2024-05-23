@@ -73,8 +73,7 @@ const About = () => {
                 </span>
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-                lacus non fermentum ultrices. Fusce consectetur le.
+              Unlock the full potential of your digital business with our end-to-end solutions, driving growth and innovation every step of the way.
               </p>
 
               <div className="mt-7.5 flex items-center gap-5">
@@ -87,7 +86,7 @@ const About = () => {
                   <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
                     Comprehensive Services
                   </h5>
-                  <p>Ut ultricies lacus non fermentum ultrices.</p>
+                  <p>Designed to elevate your business, ensuring success and growth in every aspect of your journey.</p>
                 </div>
               </div>
               <div className="mt-7.5 flex items-center gap-5">
@@ -100,7 +99,7 @@ const About = () => {
                   <h5 className="text-black dark:text-white text-metatitle2 mb-0.5">
                     Fully Customizable
                   </h5>
-                  <p>consectetur adipiscing elit fermentum ultricies.</p>
+                  <p>Tailor your experience with our fully customizable services, designed to meet your unique needs and exceed your expectations.</p>
                 </div>
               </div>
             </motion.div>
@@ -141,8 +140,7 @@ const About = () => {
                 </span>
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-                lacus non fermentum ultrices. Fusce consectetur le.
+              Our service offers a seamless experience, providing you with essential integrations to create a streamlined website that caters to all your requirements.
               </p>
               <div>
                 <a

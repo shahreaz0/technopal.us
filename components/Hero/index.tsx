@@ -27,10 +27,7 @@ const Hero = () => {
                 </span>
               </h1>
               <p>
-                Technopal.us is your ultimate web design partner, here to ensure your
-                website is a show-stopper for your visitors. With our commitment to
-                innovation and user-centric design, we deliver memorable web experiences
-                that leave a lasting impression.
+              Technopal.us is the perfect choice for all your web design needs, dedicated to creating websites that captivate your audience. Through our focus on creativity and user-friendly design, we provide exceptional web solutions that make a lasting impact.
               </p>
 
               <div className="mt-10">

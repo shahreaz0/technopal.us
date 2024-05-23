@@ -7,28 +7,28 @@ import { motion } from "framer-motion";
 const points = [
   {
     id: "01",
-    title: "Lorem, ipsum.",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    title: "Cost-effective",
+    description: "We provide affordable, high-value services.",
   },
   {
     id: "02",
-    title: "Lorem, ipsum.",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    title: "Customer engagement.",
+    description: "Unlock customer loyalty through meaningful engagement strategies.",
   },
   {
     id: "03",
-    title: "Lorem, ipsum.",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    title: "Higher conversion",
+    description: "Boost your conversion rates effortlessly with our tailored solutions.",
   },
   {
     id: "04",
-    title: "Lorem, ipsum.",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    title: "Global reach",
+    description: "Expand your horizons with our global reach solutions.",
   },
   {
     id: "05",
-    title: "Lorem, ipsum.",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    title: "Brand awareness",
+    description: "Elevate your brand with meaningful engagement.",
   },
 ];
 

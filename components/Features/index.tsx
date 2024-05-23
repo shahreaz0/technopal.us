@@ -15,9 +15,9 @@ const Feature = () => {
             headerInfo={{
               title: "TECHNOPAL FEATURES",
               subtitle: "Core Features of Technopal",
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-            convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam
-            ante in maximus.`,
+              description: `Technopal.us: Your Trusted partner in digital marketing! Amplify your online presence through advertising, 
+              SEO optimization, social media management, content creation, analytics, website creation, and apps development. Let's succeed together!
+              `,
             }}
           />
           {/* <!-- Section Title End --> */}

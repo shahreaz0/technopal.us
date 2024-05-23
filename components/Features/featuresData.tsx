@@ -4,44 +4,44 @@ const featuresData: Feature[] = [
   {
     id: 1,
     icon: "/images/icon/icon-01.svg",
-    title: "User-Centric Design",
+    title: "Web Design & Development",
     description:
-      "Prioritize user experience and design your website with the preferences of your target audience in mind.",
+      "Develop websites that are optimized for search engines, boosting visibility, attracting visitors, and elevating your online presence.",
   },
   {
     id: 2,
     icon: "/images/icon/icon-02.svg",
     title: "Responsive Design",
     description:
-      "Ensure your website is responsive and mobile-friendly to cater to users on various devices.",
+      "Make sure your website is responsive and compatible with mobile devices to provide a seamless experience for users across different platforms.",
   },
   {
     id: 3,
     icon: "/images/icon/icon-03.svg",
-    title: "Scalability",
+    title: "Apps Development",
     description:
-      "Design your website with scalability in mind, allowing for growth and future updates.",
+      "App development plays a crucial role in streamlining processes, enhancing customer engagement, boosting brand visibility, and fostering innovation in digital landscapes.",
   },
   {
     id: 4,
     icon: "/images/icon/icon-04.svg",
     title: "SEO Best Practices",
     description:
-      "Implement SEO strategies to enhance your website's visibility and search engine rankings.",
+      "Enhance the visibility and search engine rankings of your website by implementing our effective SEO strategies.",
   },
   {
     id: 5,
     icon: "/images/icon/icon-05.svg",
-    title: "Content Quality",
+    title: "User-Centric Design",
     description:
-      "Create high-quality, relevant, and engaging content to attract and retain visitors.",
+      "Focuses on users' needs, preferences, and behaviors to create intuitive & satisfying experiences.",
   },
   {
     id: 6,
     icon: "/images/icon/icon-06.svg",
-    title: "Branding Consistency",
+    title: "Social Media Marketing",
     description:
-      "Maintain a consistent and cohesive brand identity across your website to make it more unique.",
+      "The power of SMM is driven by the unparalleled capacity of social media in three core marketing areas: connection, interaction, and customer data.",
   },
 ];
 
